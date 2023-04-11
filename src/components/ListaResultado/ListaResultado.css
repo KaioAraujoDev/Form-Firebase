@@ -1,0 +1,55 @@
+.div-main-list{
+    background-color: aquamarine;
+    padding: 4rem;
+}
+.div-main-list .list-main,
+.item .details ul
+{
+    list-style: none;
+}
+
+.list-main{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.list-main .item{
+    background-color: aliceblue;
+    padding: 1rem;
+    width: 12rem;
+    height: 12rem;
+    border-radius:7px;
+    margin-bottom: 4rem;
+}
+
+.item:not(.item:last-child){
+    margin-right: 1rem;
+}
+
+.item .image{
+    display: flex;
+    justify-content: center;
+}
+.item .image img{
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: .5rem;
+}
+.item .title{
+    font-weight: 600;
+    font-size: 12px;
+    width: 100%;
+    word-break: break-word;
+    margin-bottom: .5rem;
+}
+.item .details ul li{
+    font-weight: normal;
+    font-size: 10px;
+    width: 100%;
+    word-break: break-word;
+    text-transform: uppercase;
+    text-align: center;
+}
