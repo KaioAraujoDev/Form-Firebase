@@ -20,11 +20,12 @@ function App() {
   const fetchData = () => {
     
     setLoading(true)
+
     const fetch = GetData();
+
     fetch.then((res)=>{
         setData(res)
         setLoading(false)
-
     }).catch(e =>{
         console.log(e);
     }) 
