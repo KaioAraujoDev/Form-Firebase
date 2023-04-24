@@ -1,7 +1,9 @@
 
 import { useState } from "react";
 import Input from "./Input";
-import Firebase from "../Firebase";
+import Firebase , { inviteImage } from "../Firebase";
+import { v4 } from "uuid";
+
 import "./Formulario.css";
 
 const Formulario = (props) =>{
@@ -11,29 +13,28 @@ const Formulario = (props) =>{
     const [idade,setIdade] = useState('');
     const [sexo,setSexo] = useState('');
     const [image,setImage] = useState('');
-    const [viewImage, setViewImage] = useState(false);
-    const [loadImage, setLoadImage] = useState(false);
 
-
-    const inviteData = (event) =>{
+    const inviteData = async (event) =>{
 
         event.preventDefault();
 
-        
+        const id = v4();
+
         const data = ({
             nome,
             profissao,
             idade,
             sexo,
-            image
+            id
         }) 
 
-        
-
+        await inviteImage(image,id);
         Firebase(data);
-
+        
         props.fetchData(); 
         
+        
+
     }
 
    
@@ -76,60 +77,6 @@ const Formulario = (props) =>{
                     required={true}
                 />
 
-                {/* <Input
-                    aoAlterar={(event)=>{
-                        setImage(event.target.value)
-                        
-                        setViewImage(false);
-                        setLoadImage(true);
-
-                        setTimeout(()=>{
-                            const searchImage = ()=>{
-                                
-    
-    
-                                const image = event.target.value;
-                                const firstString = (image.indexOf("://")+ 3) ;
-                                const formatString = image.substring(firstString,image.length);
-    
-                                fetch(`https://${formatString}`).then((res)=>{
-                                    
-                                    if(res.status === 200){
-                                        setViewImage(true);
-                                        setLoadImage(false);
-                                    }else{
-                                        setViewImage(false);
-                                        setLoadImage(false);
-                                    }
-    
-                                }).catch(e =>{
-                                    console.log(e);
-                                    setViewImage(false);
-                                    setLoadImage(false);
-                                })
-                            }
-
-                            searchImage();
-                        },1500)
-                        
-                    }} 
-                    label="Imagem" 
-                    placeholder="Coloque aqui sua imagem" 
-                    type="text"
-                    required={false}
-                /> */}
-                {/* <div className="div-result-image">
-                    { (viewImage === false && loadImage) ? 
-                        <div className="div-loading">
-                            <img src="./img/loading.svg" alt="loading-img"></img>
-                        </div>
-                        : (viewImage && loadImage === false) ? 
-                            <div className="div-image-view">
-                                <img src={image} alt="img-view"></img> 
-                            </div> : <div className="div-alert-view"> <p>Digite um link de imagem válido para adicionar ao perfil </p></div>
-                    }
-                </div> */}
-                
                 <div className="div-input">
                     <label>Selecione seu sexo</label>
                     <Input 

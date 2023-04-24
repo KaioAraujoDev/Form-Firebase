@@ -6,12 +6,10 @@ import { getFirestore,
          addDoc,
          getDocs
         } from 'firebase/firestore';
-import { getStorage,ref ,uploadBytes} from "firebase/storage";
+import { getStorage,ref ,uploadBytes, getDownloadURL} from "firebase/storage";
 
-import { v4 } from "uuid";
 
-const namePhoto = v4() + ".jpg";
-const namePath = "image/"+namePhoto;
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -31,33 +29,57 @@ const db = getFirestore(app);
 
 //storage
 const storage = getStorage(app);
-const storageRef = ref(storage,"image/image.jpg");
 
 
-
-
-const Firebase = async ({nome,profissao,idade,sexo,image}) =>{
+const Firebase = async ({nome,profissao,idade,sexo,id}) =>{
     
     try {
         const docRef = await addDoc(collection(db, "pessoas"), {
           nome: nome,
           profissao: profissao,
           idade: idade,
-          sexo:sexo
+          sexo:sexo,
+          id:id
         });
 
-        uploadBytes(storageRef , image).then((snapshot)=>{
-            console.log('uploaded a blob or file!');
-        })
 
         console.log("Document written with ID: ", docRef.id);
     } catch (e) {
         console.error("Error adding document: ", e);
-    }
-    
+    }  
 
 }
 
+const inviteImage = async (image,id)=>{
+
+    const namePhoto = id + ".jpg";
+    const namePath = "image/"+namePhoto;
+
+    const storageRef = ref(storage,namePath);
+
+    async function uploadImage(){
+        return await uploadBytes(storageRef , image);
+    }
+    
+    return await uploadImage();
+    
+}
+
+const getImage = async (id)=>{
+    const namePhoto = id + ".jpg";
+    const namePath = "image/"+namePhoto;
+
+
+    async function getUrl(){
+        try{
+            const url = await getDownloadURL(ref(storage,namePath));
+            return url;
+        } catch(error){
+            // console.log("error: "+error);
+        }
+    }
+    return await getUrl();
+}
 
 const GetData = () =>{
 
@@ -85,7 +107,7 @@ const GetData = () =>{
 }
 
 
-export { GetData };
+export { GetData , inviteImage, getImage};
 export default Firebase;
 
 
